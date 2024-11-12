@@ -5,15 +5,15 @@ import time
 import logging
 from threading import Thread
 from pygame import mixer
+import customtkinter as ctk
 
-# Define audio paths and descriptions
+# Previous constants remain the same
 AUDIO_DIR = {
     'Messages': 'audio/Messages',
     'Reasons': 'audio/Reasons',
     'Warnings': 'audio/Warnings'
 }
 
-# Map files to descriptive names
 DESCRIPTIONS = {
     'Messages': {
         'Program completed.mp3': 'PROGRAM COMPLETED',
@@ -40,13 +40,12 @@ DESCRIPTIONS = {
     }
 }
 
-# Delay between audio files (in milliseconds)
 PLAY_DELAY = 500
 
 # Setup logging
 LOG_DIR = 'logs'
 LOG_FILE = os.path.join(LOG_DIR, 'log.txt')
-os.makedirs(LOG_DIR, exist_ok=True)  # Create logs directory if it doesn't exist
+os.makedirs(LOG_DIR, exist_ok=True)
 
 logging.basicConfig(
     filename=LOG_FILE,
@@ -55,16 +54,13 @@ logging.basicConfig(
 )
 
 
-# Log a message
 def log_event(message):
     logging.info(message)
 
 
-# Initialize pygame mixer
 mixer.init()
 
 
-# Load audio files by category
 def load_audio_files():
     audio_files = {}
     for category, path in AUDIO_DIR.items():
@@ -77,82 +73,163 @@ def load_audio_files():
     return audio_files
 
 
-audio_files = load_audio_files()
+class ModernAudioTester:
+    def __init__(self):
+        self.audio_files = load_audio_files()
+        self.setup_window()
+        self.create_variables()
+        self.create_ui()
 
+    def setup_window(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
 
-# Function to play audio alerts in specific sequence: Warnings -> Messages -> Reasons
-def play_alert_sequence(selected_files):
-    play_order = ['Warnings', 'Messages', 'Reasons']
-    for category in play_order:
-        file = selected_files.get(category)
-        if file:
-            filepath = os.path.join(AUDIO_DIR[category], file)
-            try:
-                # Use Sound for individual, non-overlapping playback
-                sound = mixer.Sound(filepath)
-                log_event(f"Playing {category} alert: {DESCRIPTIONS[category][file]}")
-                sound.play()
-                while mixer.get_busy():
-                    time.sleep(0.1)  # Wait until playback finishes
-                time.sleep(PLAY_DELAY / 1000)  # Delay in seconds
-            except Exception as e:
-                log_event(f"Error playing {file}: {e}")
-                messagebox.showerror("Playback Error", f"Could not play {file}: {e}")
+        self.root = ctk.CTk()
+        self.root.title("Audio Alert Tester")
+        self.root.geometry("1200x600")
+        self.root.resizable(False, False)
 
+        self.root.grid_columnconfigure((0, 1, 2), weight=1)
+        self.root.grid_rowconfigure(1, weight=1)
 
-# UI function to handle button click
-def on_test_alert():
-    selected_files = {
-        'Messages': message_var.get(),
-        'Reasons': reason_var.get(),
-        'Warnings': warning_var.get()
-    }
-    if all(selected_files.values()):
-        # Create a combination description based on selected files
-        combination = ", ".join(DESCRIPTIONS[category][file] for category, file in selected_files.items())
+    def create_variables(self):
+        # Using custom StringVars to handle deselection
+        self.message_var = tk.StringVar(value="")
+        self.reason_var = tk.StringVar(value="")
+        self.warning_var = tk.StringVar(value="")
+
+        # Store the last selected values
+        self.last_selected = {
+            'Messages': "",
+            'Reasons': "",
+            'Warnings': ""
+        }
+
+    def create_ui(self):
+        # Title
+        title_label = ctk.CTkLabel(
+            self.root,
+            text="Audio Alert Tester",
+            font=("Helvetica", 24, "bold")
+        )
+        title_label.grid(row=0, column=0, columnspan=3, pady=(20, 30), padx=20, sticky="ew")
+
+        # Create category frames side by side
+        self.create_category_frame("Warnings", self.audio_files['Warnings'],
+                                   self.warning_var, "#FF6B6B", 0)
+        self.create_category_frame("Messages", self.audio_files['Messages'],
+                                   self.message_var, "#4ECDC4", 1)
+        self.create_category_frame("Reasons", self.audio_files['Reasons'],
+                                   self.reason_var, "#45B7D1", 2)
+
+        # Controls frame at the bottom
+        controls_frame = ctk.CTkFrame(self.root)
+        controls_frame.grid(row=2, column=0, columnspan=3, sticky="ew", padx=20, pady=(20, 10))
+        controls_frame.grid_columnconfigure(0, weight=1)
+
+        # Test button
+        self.test_button = ctk.CTkButton(
+            controls_frame,
+            text="Test Alert Sequence",
+            font=("Helvetica", 16, "bold"),
+            command=self.on_test_alert,
+            height=40,
+            width=200
+        )
+        self.test_button.grid(row=0, column=0, pady=10)
+
+        # Status label
+        self.status_label = ctk.CTkLabel(
+            controls_frame,
+            text="Select alerts to test",
+            font=("Helvetica", 12)
+        )
+        self.status_label.grid(row=1, column=0, pady=(0, 10))
+
+    def handle_radio_click(self, category, variable, value):
+        # If clicking the same radio button that's already selected, deselect it
+        if self.last_selected[category] == value:
+            variable.set("")
+            self.last_selected[category] = ""
+        else:
+            self.last_selected[category] = value
+
+    def create_category_frame(self, category, options, variable, color, column):
+        # Create main frame for category
+        frame = ctk.CTkFrame(self.root)
+        frame.grid(row=1, column=column, pady=10, padx=10, sticky="nsew")
+
+        # Category header
+        header = ctk.CTkLabel(
+            frame,
+            text=category,
+            font=("Helvetica", 18, "bold"),
+            text_color=color
+        )
+        header.grid(row=0, pady=(10, 5), padx=10)
+
+        # Add radio buttons directly to the main frame instead of creating a separate options frame
+        for idx, option in enumerate(sorted(options)):
+            radio = ctk.CTkRadioButton(
+                frame,  # Changed from options_frame to frame
+                text=DESCRIPTIONS[category][option],
+                variable=variable,
+                value=option,
+                font=("Helvetica", 12),
+                command=lambda c=category, v=variable, o=option: self.handle_radio_click(c, v, o)
+            )
+            radio.grid(row=idx+1, column=0, pady=5, padx=10, sticky="w")  # Changed row index to idx+1
+
+    def play_alert_sequence(self, selected_files):
+        play_order = ['Warnings', 'Messages', 'Reasons']
+        self.test_button.configure(state="disabled", text="Playing...")
+        self.status_label.configure(text="Playing sequence...")
+
+        # Only play selected categories
+        played_count = 0
+        for category in play_order:
+            file = selected_files.get(category)
+            if file:
+                filepath = os.path.join(AUDIO_DIR[category], file)
+                try:
+                    sound = mixer.Sound(filepath)
+                    log_event(f"Playing {category} alert: {DESCRIPTIONS[category][file]}")
+                    sound.play()
+                    played_count += 1
+                    while mixer.get_busy():
+                        time.sleep(0.1)
+                    time.sleep(PLAY_DELAY / 1000)
+                except Exception as e:
+                    log_event(f"Error playing {file}: {e}")
+                    messagebox.showerror("Playback Error", f"Could not play {file}: {e}")
+
+        self.test_button.configure(state="normal", text="Test Alert Sequence")
+        self.status_label.configure(text=f"Played {played_count} alert{'s' if played_count != 1 else ''}")
+
+    def on_test_alert(self):
+        selected_files = {
+            'Messages': self.message_var.get(),
+            'Reasons': self.reason_var.get(),
+            'Warnings': self.warning_var.get()
+        }
+
+        # Check if at least one category is selected
+        if not any(selected_files.values()):
+            self.status_label.configure(text="Please select at least one alert")
+            return
+
+        # Filter out unselected categories
+        selected_files = {k: v for k, v in selected_files.items() if v}
+
+        combination = ", ".join(DESCRIPTIONS[category][file]
+                                for category, file in selected_files.items())
         log_event(f"Test Alert triggered with combination: {combination}")
+        Thread(target=self.play_alert_sequence, args=(selected_files,)).start()
 
-        # Start playback in a separate thread
-        Thread(target=play_alert_sequence, args=(selected_files,)).start()
-    else:
-        log_event("Selection Error: Not all categories selected")
-        messagebox.showwarning("Selection Error", "Please select one alert from each category.")
+    def run(self):
+        self.root.mainloop()
 
 
-# Create the main application window
-root = tk.Tk()
-root.title("Audio Alert Tester - Proof of Concept")
-root.geometry("500x600")
-root.configure(bg="#333333")
-
-# Style configuration for a dark theme
-style = ttk.Style(root)
-style.theme_use('clam')
-style.configure("TLabel", foreground="white", background="#333333")
-style.configure("TCheckbutton", foreground="white", background="#444444", font=('Helvetica', 10))
-style.configure("TButton", background="#555555", foreground="white", font=('Helvetica', 12, 'bold'))
-
-# Category frames and variables
-message_var = tk.StringVar(value="")
-reason_var = tk.StringVar(value="")
-warning_var = tk.StringVar(value="")
-
-
-def create_category_frame(category, options, variable):
-    frame = ttk.LabelFrame(root, text=category, style="TLabel")
-    for option in options:
-        ttk.Radiobutton(frame, text=DESCRIPTIONS[category][option], value=option, variable=variable,
-                        style="TCheckbutton").pack(anchor='w', padx=10, pady=2)
-    frame.pack(pady=15, fill='x', padx=20)
-
-
-# Populate the frames with audio options
-create_category_frame("Warnings", audio_files['Warnings'], warning_var)
-create_category_frame("Messages", audio_files['Messages'], message_var)
-create_category_frame("Reasons", audio_files['Reasons'], reason_var)
-
-# TEST ALERT button
-ttk.Button(root, text="TEST ALERT", command=on_test_alert, style="TButton").pack(pady=20)
-
-# Start the application
-root.mainloop()
+if __name__ == "__main__":
+    app = ModernAudioTester()
+    app.run()
