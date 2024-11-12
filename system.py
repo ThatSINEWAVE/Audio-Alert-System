@@ -1,12 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from pydub import AudioSegment
-from pydub.playback import play
 import os
 import time
 import logging
 from threading import Thread
-from datetime import datetime
+from pygame import mixer
 
 # Define audio paths and descriptions
 AUDIO_DIR = {
@@ -18,27 +16,27 @@ AUDIO_DIR = {
 # Map files to descriptive names
 DESCRIPTIONS = {
     'Messages': {
-        'Program completed.m4a': 'PROGRAM COMPLETED',
-        'Program stopped.m4a': 'PROGRAM STOPPED',
-        'Program crashed.m4a': 'PROGRAM FAILED',
-        'Program started.m4a': 'PROGRAM STARTED'
+        'Program completed.mp3': 'PROGRAM COMPLETED',
+        'Program stopped.mp3': 'PROGRAM STOPPED',
+        'Program crashed.mp3': 'PROGRAM FAILED',
+        'Program started.mp3': 'PROGRAM STARTED'
     },
     'Reasons': {
-        'Potential crash.m4a': 'POTENTIAL CRASH',
-        'Stopped by user.m4a': 'STOPPED BY USER',
-        'System error.m4a': 'SYSTEM ERROR',
-        'Task completed.m4a': 'TASK COMPLETED',
-        'Task failed.m4a': 'TASK FAILED',
-        'Unknown.m4a': 'UNKNOWN ISSUE'
+        'Potential crash.mp3': 'POTENTIAL CRASH',
+        'Stopped by user.mp3': 'STOPPED BY USER',
+        'System error.mp3': 'SYSTEM ERROR',
+        'Task completed.mp3': 'TASK COMPLETED',
+        'Task failed.mp3': 'TASK FAILED',
+        'Unknown.mp3': 'UNKNOWN ISSUE'
     },
     'Warnings': {
-        'Abnormal_activity.m4a': 'ABNORMAL ACTIVITY',
-        'Critical_error.m4a': 'CRITICAL ERROR',
-        'Execution_error.m4a': 'EXECUTION ERROR',
-        'Fatal_error.m4a': 'FATAL ERROR',
-        'System_warning.m4a': 'SYSTEM WARNING',
-        'Unusual_activity.m4a': 'UNUSUAL ACTIVITY',
-        'Warning.m4a': 'GENERAL WARNING'
+        'Abnormal_activity.mp3': 'ABNORMAL ACTIVITY',
+        'Critical_error.mp3': 'CRITICAL ERROR',
+        'Execution_error.mp3': 'EXECUTION ERROR',
+        'Fatal_error.mp3': 'FATAL ERROR',
+        'System_warning.mp3': 'SYSTEM WARNING',
+        'Unusual_activity.mp3': 'UNUSUAL ACTIVITY',
+        'Warning.mp3': 'GENERAL WARNING'
     }
 }
 
@@ -62,12 +60,16 @@ def log_event(message):
     logging.info(message)
 
 
+# Initialize pygame mixer
+mixer.init()
+
+
 # Load audio files by category
 def load_audio_files():
     audio_files = {}
     for category, path in AUDIO_DIR.items():
         try:
-            files = [f for f in os.listdir(path) if f.endswith('.m4a')]
+            files = [f for f in os.listdir(path) if f.endswith('.mp3')]
             audio_files[category] = files
         except FileNotFoundError:
             messagebox.showerror("Error", f"Directory not found: {path}")
@@ -78,15 +80,20 @@ def load_audio_files():
 audio_files = load_audio_files()
 
 
-# Function to play audio alerts in sequence using pydub
+# Function to play audio alerts in specific sequence: Warnings -> Messages -> Reasons
 def play_alert_sequence(selected_files):
-    for category, file in selected_files.items():
+    play_order = ['Warnings', 'Messages', 'Reasons']
+    for category in play_order:
+        file = selected_files.get(category)
         if file:
             filepath = os.path.join(AUDIO_DIR[category], file)
             try:
-                audio = AudioSegment.from_file(filepath)
-                play(audio)
+                # Use Sound for individual, non-overlapping playback
+                sound = mixer.Sound(filepath)
                 log_event(f"Playing {category} alert: {DESCRIPTIONS[category][file]}")
+                sound.play()
+                while mixer.get_busy():
+                    time.sleep(0.1)  # Wait until playback finishes
                 time.sleep(PLAY_DELAY / 1000)  # Delay in seconds
             except Exception as e:
                 log_event(f"Error playing {file}: {e}")
@@ -140,9 +147,9 @@ def create_category_frame(category, options, variable):
 
 
 # Populate the frames with audio options
+create_category_frame("Warnings", audio_files['Warnings'], warning_var)
 create_category_frame("Messages", audio_files['Messages'], message_var)
 create_category_frame("Reasons", audio_files['Reasons'], reason_var)
-create_category_frame("Warnings", audio_files['Warnings'], warning_var)
 
 # TEST ALERT button
 ttk.Button(root, text="TEST ALERT", command=on_test_alert, style="TButton").pack(pady=20)
