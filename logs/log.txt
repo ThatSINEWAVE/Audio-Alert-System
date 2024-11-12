@@ -3,3 +3,15 @@
 2024-11-12 23:50:19,953 - INFO - Error playing Program completed.m4a: [WinError 2] The system cannot find the file specified
 2024-11-12 23:50:22,382 - INFO - Error playing Potential crash.m4a: [WinError 2] The system cannot find the file specified
 2024-11-12 23:50:23,222 - INFO - Error playing Abnormal_activity.m4a: [WinError 2] The system cannot find the file specified
+2024-11-12 23:57:02,504 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-12 23:57:02,512 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-12 23:57:03,012 - INFO - Playing Reasons alert: POTENTIAL CRASH
+2024-11-12 23:57:03,514 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
+2024-11-12 23:58:56,362 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-12 23:58:56,366 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-12 23:58:58,478 - INFO - Playing Reasons alert: POTENTIAL CRASH
+2024-11-12 23:59:02,095 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
+2024-11-13 00:00:19,202 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-13 00:00:19,206 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
+2024-11-13 00:00:21,819 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-13 00:00:23,933 - INFO - Playing Reasons alert: POTENTIAL CRASH
