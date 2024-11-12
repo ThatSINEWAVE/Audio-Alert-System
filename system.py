@@ -7,7 +7,7 @@ from threading import Thread
 from pygame import mixer
 import customtkinter as ctk
 
-# Previous constants remain the same
+# Constants
 AUDIO_DIR = {
     'Messages': 'audio/Messages',
     'Reasons': 'audio/Reasons',
@@ -42,16 +42,12 @@ DESCRIPTIONS = {
 
 PLAY_DELAY = 500
 
-# Setup logging
+# Logging
 LOG_DIR = 'logs'
 LOG_FILE = os.path.join(LOG_DIR, 'log.txt')
 os.makedirs(LOG_DIR, exist_ok=True)
 
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def log_event(message):
@@ -86,41 +82,30 @@ class ModernAudioTester:
 
         self.root = ctk.CTk()
         self.root.title("Audio Alert Tester")
-        self.root.geometry("1200x600")
+        self.root.geometry("900x600")
         self.root.resizable(False, False)
 
         self.root.grid_columnconfigure((0, 1, 2), weight=1)
         self.root.grid_rowconfigure(1, weight=1)
 
     def create_variables(self):
-        # Using custom StringVars to handle deselection
         self.message_var = tk.StringVar(value="")
         self.reason_var = tk.StringVar(value="")
         self.warning_var = tk.StringVar(value="")
 
         # Store the last selected values
-        self.last_selected = {
-            'Messages': "",
-            'Reasons': "",
-            'Warnings': ""
-        }
+        self.last_selected = {'Messages': "", 'Reasons': "", 'Warnings': ""}
 
     def create_ui(self):
         # Title
         title_label = ctk.CTkLabel(
-            self.root,
-            text="Audio Alert Tester",
-            font=("Helvetica", 24, "bold")
-        )
+            self.root, text="Audio Alert Tester", font=("Helvetica", 24, "bold"))
         title_label.grid(row=0, column=0, columnspan=3, pady=(20, 30), padx=20, sticky="ew")
 
         # Create category frames side by side
-        self.create_category_frame("Warnings", self.audio_files['Warnings'],
-                                   self.warning_var, "#FF6B6B", 0)
-        self.create_category_frame("Messages", self.audio_files['Messages'],
-                                   self.message_var, "#4ECDC4", 1)
-        self.create_category_frame("Reasons", self.audio_files['Reasons'],
-                                   self.reason_var, "#45B7D1", 2)
+        self.create_category_frame("Warnings", self.audio_files['Warnings'], self.warning_var, "#FF6B6B", 0)
+        self.create_category_frame("Messages", self.audio_files['Messages'], self.message_var, "#4ECDC4", 1)
+        self.create_category_frame("Reasons", self.audio_files['Reasons'], self.reason_var, "#45B7D1", 2)
 
         # Controls frame at the bottom
         controls_frame = ctk.CTkFrame(self.root)
@@ -130,20 +115,12 @@ class ModernAudioTester:
         # Test button
         self.test_button = ctk.CTkButton(
             controls_frame,
-            text="Test Alert Sequence",
-            font=("Helvetica", 16, "bold"),
-            command=self.on_test_alert,
-            height=40,
-            width=200
-        )
+            text="Test Alert Sequence", font=("Helvetica", 16, "bold"), command=self.on_test_alert, height=40, width=200)
         self.test_button.grid(row=0, column=0, pady=10)
 
         # Status label
         self.status_label = ctk.CTkLabel(
-            controls_frame,
-            text="Select alerts to test",
-            font=("Helvetica", 12)
-        )
+            controls_frame, text="Select alerts to test", font=("Helvetica", 12))
         self.status_label.grid(row=1, column=0, pady=(0, 10))
 
     def handle_radio_click(self, category, variable, value):
@@ -155,30 +132,18 @@ class ModernAudioTester:
             self.last_selected[category] = value
 
     def create_category_frame(self, category, options, variable, color, column):
-        # Create main frame for category
+        # Create main frame for category with reduced width
         frame = ctk.CTkFrame(self.root)
-        frame.grid(row=1, column=column, pady=10, padx=10, sticky="nsew")
+        frame.grid(row=1, column=column, pady=10, padx=5, sticky="nsew")  # Reduced padx from 10 to 5
 
         # Category header
-        header = ctk.CTkLabel(
-            frame,
-            text=category,
-            font=("Helvetica", 18, "bold"),
-            text_color=color
-        )
+        header = ctk.CTkLabel(frame, text=category, font=("Helvetica", 18, "bold"), text_color=color)
         header.grid(row=0, pady=(10, 5), padx=10)
 
-        # Add radio buttons directly to the main frame instead of creating a separate options frame
+        # Add radio buttons
         for idx, option in enumerate(sorted(options)):
-            radio = ctk.CTkRadioButton(
-                frame,  # Changed from options_frame to frame
-                text=DESCRIPTIONS[category][option],
-                variable=variable,
-                value=option,
-                font=("Helvetica", 12),
-                command=lambda c=category, v=variable, o=option: self.handle_radio_click(c, v, o)
-            )
-            radio.grid(row=idx+1, column=0, pady=5, padx=10, sticky="w")  # Changed row index to idx+1
+            radio = ctk.CTkRadioButton(frame, text=DESCRIPTIONS[category][option], variable=variable, value=option, font=("Helvetica", 12), command=lambda c=category, v=variable, o=option: self.handle_radio_click(c, v, o))
+            radio.grid(row=idx+1, column=0, pady=5, padx=8, sticky="w")  # Reduced padx from 10 to 8
 
     def play_alert_sequence(self, selected_files):
         play_order = ['Warnings', 'Messages', 'Reasons']
@@ -207,11 +172,7 @@ class ModernAudioTester:
         self.status_label.configure(text=f"Played {played_count} alert{'s' if played_count != 1 else ''}")
 
     def on_test_alert(self):
-        selected_files = {
-            'Messages': self.message_var.get(),
-            'Reasons': self.reason_var.get(),
-            'Warnings': self.warning_var.get()
-        }
+        selected_files = {'Messages': self.message_var.get(), 'Reasons': self.reason_var.get(), 'Warnings': self.warning_var.get()}
 
         # Check if at least one category is selected
         if not any(selected_files.values()):
