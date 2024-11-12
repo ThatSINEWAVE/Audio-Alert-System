@@ -44,7 +44,7 @@ This repository contains a **Proof of Concept** for the *Audio Alerts System*, a
 
 4. **Run the application**:
     ```bash
-    python main.py
+    python system.py
     ```
 
 ## Usage
