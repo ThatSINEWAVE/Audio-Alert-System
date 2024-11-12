@@ -15,3 +15,39 @@
 2024-11-13 00:00:19,206 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
 2024-11-13 00:00:21,819 - INFO - Playing Messages alert: PROGRAM COMPLETED
 2024-11-13 00:00:23,933 - INFO - Playing Reasons alert: POTENTIAL CRASH
+2024-11-13 00:03:06,604 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-13 00:03:06,623 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
+2024-11-13 00:03:09,244 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-13 00:03:11,361 - INFO - Playing Reasons alert: POTENTIAL CRASH
+2024-11-13 00:04:20,808 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-13 00:04:20,839 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
+2024-11-13 00:04:23,464 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-13 00:04:25,486 - INFO - Playing Reasons alert: POTENTIAL CRASH
+2024-11-13 00:06:57,896 - INFO - Test Alert triggered with combination: PROGRAM STARTED, TASK COMPLETED, ABNORMAL ACTIVITY
+2024-11-13 00:06:57,931 - INFO - Playing Warnings alert: ABNORMAL ACTIVITY
+2024-11-13 00:07:00,557 - INFO - Playing Messages alert: PROGRAM STARTED
+2024-11-13 00:07:02,897 - INFO - Playing Reasons alert: TASK COMPLETED
+2024-11-13 00:08:28,695 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, TASK FAILED, SYSTEM WARNING
+2024-11-13 00:08:28,727 - INFO - Playing Warnings alert: SYSTEM WARNING
+2024-11-13 00:08:31,667 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-13 00:08:36,673 - INFO - Selection Error: Not all categories selected
+2024-11-13 00:08:39,234 - INFO - Selection Error: Not all categories selected
+2024-11-13 00:09:07,893 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED
+2024-11-13 00:09:07,909 - INFO - Playing Messages alert: PROGRAM COMPLETED
+2024-11-13 00:09:14,823 - INFO - Test Alert triggered with combination: PROGRAM FAILED, STOPPED BY USER
+2024-11-13 00:09:14,861 - INFO - Playing Messages alert: PROGRAM FAILED
+2024-11-13 00:09:17,591 - INFO - Playing Reasons alert: STOPPED BY USER
+2024-11-13 00:09:25,757 - INFO - Test Alert triggered with combination: PROGRAM STARTED, TASK COMPLETED
+2024-11-13 00:09:25,774 - INFO - Playing Messages alert: PROGRAM STARTED
+2024-11-13 00:09:28,088 - INFO - Playing Reasons alert: TASK COMPLETED
+2024-11-13 00:09:36,839 - INFO - Test Alert triggered with combination: PROGRAM STOPPED, STOPPED BY USER
+2024-11-13 00:09:36,872 - INFO - Playing Messages alert: PROGRAM STOPPED
+2024-11-13 00:09:38,984 - INFO - Playing Reasons alert: STOPPED BY USER
+2024-11-13 00:09:44,134 - INFO - Test Alert triggered with combination: PROGRAM STOPPED, STOPPED BY USER, FATAL ERROR
+2024-11-13 00:09:44,172 - INFO - Playing Warnings alert: FATAL ERROR
+2024-11-13 00:09:46,584 - INFO - Playing Messages alert: PROGRAM STOPPED
+2024-11-13 00:09:48,700 - INFO - Playing Reasons alert: STOPPED BY USER
+2024-11-13 00:09:57,076 - INFO - Test Alert triggered with combination: PROGRAM STOPPED, POTENTIAL CRASH, FATAL ERROR
+2024-11-13 00:09:57,094 - INFO - Playing Warnings alert: FATAL ERROR
+2024-11-13 00:09:59,507 - INFO - Playing Messages alert: PROGRAM STOPPED
+2024-11-13 00:10:01,623 - INFO - Playing Reasons alert: POTENTIAL CRASH
