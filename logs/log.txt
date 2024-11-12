@@ -1,0 +1,5 @@
+2024-11-12 23:48:47,806 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-12 23:50:19,945 - INFO - Test Alert triggered with combination: PROGRAM COMPLETED, POTENTIAL CRASH, ABNORMAL ACTIVITY
+2024-11-12 23:50:19,953 - INFO - Error playing Program completed.m4a: [WinError 2] The system cannot find the file specified
+2024-11-12 23:50:22,382 - INFO - Error playing Potential crash.m4a: [WinError 2] The system cannot find the file specified
+2024-11-12 23:50:23,222 - INFO - Error playing Abnormal_activity.m4a: [WinError 2] The system cannot find the file specified
