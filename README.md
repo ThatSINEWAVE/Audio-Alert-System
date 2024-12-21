@@ -4,7 +4,7 @@
 
 This repository contains a **Proof of Concept** for the *Audio Alerts System*, an interactive GUI-based application designed to test and manage audio alerts across different categories. The system was developed using Python with `tkinter` and `pygame` to create an intuitive interface for testing audio notifications. The project is currently in a prototype stage, intended for evaluation and improvement.
 
-![Audio-Alerts-System](https://raw.githubusercontent.com/ThatSINEWAVE/Audio-Alert-System/refs/heads/main/assets/Audio%20Alert%20Tester.png?token=GHSAT0AAAAAACSGFGDFLO4MKW5RO3DH6XZSZZT242Q)
+![Audio-Alerts-System](https://raw.githubusercontent.com/ThatSINEWAVE/Audio-Alert-System/refs/heads/main/assets/Audio%20Alert%20Tester.png)
 
 </div>
 
