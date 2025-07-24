@@ -47,6 +47,12 @@ This repository contains a **Proof of Concept** for the *Audio Alerts System*, a
     python system.py
     ```
 
+<div align="center">
+
+## [Join my discord server](https://thatsinewave.github.io/Discord-Redirect/)
+
+</div>
+
 ## Usage
 
 - **Select Alerts**: Open the app and select audio files under *Messages*, *Reasons*, or *Warnings*.
